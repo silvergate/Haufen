@@ -1,0 +1,84 @@
+integer: signed | negative | positive; nounit | supplied_int_unit | provided_unit
+
+
+supplied_int_unit:
+ -
+
+neuer name: Annotation. Kann mehrere haben.
+
+general units:
+physical:
+ - meters
+ - kilogramm
+ - gramm
+ - millisecond
+ - ampere
+ - kelvin
+ - celcius
+ - mole
+ - candela
+
+logical
+ - true/false
+ - yes/no
+
+file:
+ - mime type
+ - size of a file
+ - filename
+
+person:
+ - first name
+ - last name
+ - age in years (person)
+ - zip code
+ - city
+ - gender (int 0=male, int 1=female)
+
+data:
+ - gregorian: day of week (0=monday, ...)
+ - gregorian: day in month (0=first day)
+ - gregorian: day in year (0=1.1.xxxx)
+ - gregorian: month in year (0=january)
+ - gregorian: christian year
+ - gregorian: week in year (0=first week)
+ - hour of day (0=fist hour after midnight)
+ - minute of hour (0=first minute)
+ - second of hour (0 based)
+ - millisecond of hour (0 based)
+ - milliseconds since 1.1.1970 (can be negative)
+ - nanoseconds since 1.1.1970
+
+geo:
+ - ISO 3166-1 (country)
+ - ISO 3166-2
+ - country+variant (de_DE, de_AT, de_CH, ...)
+ - geo longitude
+ - geo latitude
+
+binary:
+ - reference to sha1
+ - reference to sha2-224
+ - ref sha2-256
+ - ref sha2-384
+ - ref sha2-512
+
+other:
+ - URI
+
+doc:
+ - paragraph (p)
+ - heading (hX)
+ - emphasized (emp)
+ - strong (strong)
+ - inserted
+ - deleted
+ - marked
+ - code
+ - keyboard
+ - sample
+ - var
+ - preformatted
+ - abbr, address, blockquote, quotation inline, cite, definition of term
+ - link
+
