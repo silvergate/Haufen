@@ -1,15 +1,15 @@
 package com.dcrux.haufen.newimpl;
 
-import com.dcrux.haufen.impl.base.IDataInput;
-import com.dcrux.haufen.impl.common.BaseType;
+import com.dcrux.haufen.Type;
+import com.dcrux.haufen.data.IDataInput;
 
 /**
  * Created by caelis on 27/08/14.
  */
 public interface IElementFactory {
-    BaseType getBaseType();
+    Type getBaseType();
 
-    IElement create(IDataInput data, byte subtype, IElementProvider elementProvider);
+    IInternalElement create(IDataInput data, byte subtype, IElementProvider elementProvider);
 
-    IElement create();
+    IInternalElement create();
 }

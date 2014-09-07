@@ -1,13 +1,13 @@
 package com.dcrux.haufen;
 
-import com.dcrux.haufen.impl.base.DataInputImpl;
-import com.dcrux.haufen.impl.base.DataOutputImpl;
-import com.dcrux.haufen.newimpl.IElement;
-import com.dcrux.haufen.newimpl.elements.bag.BagElement;
-import com.dcrux.haufen.newimpl.elements.bool.BoolElement;
-import com.dcrux.haufen.newimpl.elements.integer.IntegerElement;
-import com.dcrux.haufen.newimpl.elements.map.MapElement;
-import com.dcrux.haufen.newimpl.elements.string.StringElement;
+import com.dcrux.haufen.newimpl.IInternalElement;
+import com.dcrux.haufen.newimpl.base.DataInputImpl;
+import com.dcrux.haufen.newimpl.base.DataOutputImpl;
+import com.dcrux.haufen.newimpl.element.bag.BagElement;
+import com.dcrux.haufen.newimpl.element.bool.BoolElement;
+import com.dcrux.haufen.newimpl.element.integer.IntegerElement;
+import com.dcrux.haufen.newimpl.element.map.MapElement;
+import com.dcrux.haufen.newimpl.element.string.StringElement;
 import com.dcrux.haufen.newimpl.serializer.Deserializer;
 import com.dcrux.haufen.newimpl.serializer.Serializer;
 
@@ -53,7 +53,7 @@ public class Test2 {
          /* Deserialize */
         DataInputImpl dataInput = new DataInputImpl(baos.toByteArray());
         Deserializer deserializer = new Deserializer();
-        IElement element = deserializer.deserialize(dataInput);
+        IInternalElement element = deserializer.deserialize(dataInput);
 
         System.out.println("Deserialized: '" + element + "'");
     }

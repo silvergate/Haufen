@@ -1,7 +1,7 @@
 package com.dcrux.haufen.newimpl.utils;
 
-import com.dcrux.haufen.impl.base.IDataInput;
-import com.dcrux.haufen.impl.base.IDataOutput;
+import com.dcrux.haufen.data.IDataInput;
+import com.dcrux.haufen.data.IDataOutput;
 
 /**
  * Created by caelis on 31/08/14.
