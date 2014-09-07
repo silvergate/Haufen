@@ -11,12 +11,28 @@ public enum BaseType {
     string((byte) 2),
     bool((byte) 3),
     binary((byte) 4),
+
+    // (keys) ordered: false, duplicates: false
     map((byte) 5),
-    table((byte) 6),
-    bag((byte) 7),
-    set((byte) 8),
-    array((byte) 9),
-    annotation((byte) 10),
+    // (keys) ordered: true, duplicates: false
+    orderedMap((byte) 6),
+
+    // ordered: false, duplicates: true
+    bag((byte) 8),
+    // ordered: true, duplicates: true
+    orderedBag((byte) 9), //TODO: MISSING
+
+    // ordered: false, duplicates: false
+    set((byte) 10),
+    // ordered: true, duplicates: false
+    orderedSet((byte) 11),
+
+    // ordered: true, duplicates: true
+    array((byte) 12),
+
+    table((byte) 14), //TODO: MISSING
+
+    annotation((byte) 13), //TODO: MISSING
     index((byte) 31);
 
     private byte code;

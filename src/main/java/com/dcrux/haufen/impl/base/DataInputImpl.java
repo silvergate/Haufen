@@ -1,5 +1,7 @@
 package com.dcrux.haufen.impl.base;
 
+import com.dcrux.haufen.newimpl.elements.DataException;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,33 +13,49 @@ public class DataInputImpl implements IDataInput {
     private final byte[] data;
     private final InputStream inputStream;
     private long pointer;
+    private int retainCount;
 
     public DataInputImpl(byte[] data) {
         this.data = data;
         this.inputStream = new ByteArrayInputStream(data);
+        retain();
     }
 
     @Override
-    public void readFully(byte[] b) throws IOException {
-        int actuallyRead = this.inputStream.read(b);
-        if (actuallyRead != b.length)
-            throw new IOException("Not enough data available");
-        this.pointer += b.length;
+    public void readFully(byte[] b) {
+
+        try {
+            int actuallyRead = this.inputStream.read(b);
+
+            if (actuallyRead != b.length)
+                throw new DataException("Not enough data available");
+            this.pointer += b.length;
+        } catch (IOException e) {
+            throw new DataException("Error reading", e);
+        }
     }
 
     @Override
-    public void readFully(byte[] b, int off, int len) throws IOException {
-        int actuallyRead = this.inputStream.read(b, off, len);
-        if (actuallyRead != len)
-            throw new IOException("Not enough data available");
-        this.pointer += len;
+    public void readFully(byte[] b, int off, int len) {
+        try {
+            int actuallyRead = this.inputStream.read(b, off, len);
+            if (actuallyRead != len)
+                throw new IOException("Not enough data available");
+            this.pointer += len;
+        } catch (IOException ioe) {
+            throw new DataException("Error reading", ioe);
+        }
     }
 
     @Override
-    public byte readByte() throws IOException {
-        byte data = (byte) this.inputStream.read();
-        this.pointer++;
-        return data;
+    public byte readByte() {
+        try {
+            byte data = (byte) this.inputStream.read();
+            this.pointer++;
+            return data;
+        } catch (IOException ioe) {
+            throw new DataException("Error reading", ioe);
+        }
     }
 
     @Override
@@ -46,15 +64,44 @@ public class DataInputImpl implements IDataInput {
     }
 
     @Override
-    public long getLength() throws IOException {
+    public long getLength() {
         return this.data.length;
     }
 
     @Override
-    public void seek(long position) throws IOException {
-        this.inputStream.reset();
-        long skipped = this.inputStream.skip(position);
-        if (skipped != position)
-            throw new IOException("Could not seek. Seeked to position " + skipped + " only.");
+    public void seek(long position) {
+        try {
+            this.inputStream.reset();
+            long skipped = this.inputStream.skip(position);
+            if (skipped != position)
+                throw new IOException("Could not seek. Seeked to position " + skipped + " only. Requested: " + position);
+            this.pointer = position;
+        } catch (IOException ioe) {
+            throw new DataException("Error reading", ioe);
+        }
+    }
+
+    @Override
+    public void retain() {
+        this.retainCount++;
+    }
+
+    @Override
+    public void release() {
+        this.retainCount--;
+        if (this.retainCount == 0) {
+            try {
+                this.inputStream.close();
+            } catch (IOException e) {
+                throw new DataException("Error closing input stream", e);
+            }
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+        while (this.retainCount > 0) {
+            release();
+        }
     }
 }

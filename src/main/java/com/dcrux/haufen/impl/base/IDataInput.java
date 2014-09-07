@@ -9,26 +9,26 @@ public interface IDataInput extends AutoCloseable {
     /**
      * Reads some bytes from an input
      * stream and stores them into the buffer
-     * array {@code b}. The number of bytes
+     * set {@code b}. The number of bytes
      * read is equal
      * to the length of {@code b}.
-     * <p/>
+     * <p>
      * This method blocks until one of the
      * following conditions occurs:
      * <ul>
      * <li>{@code b.length}
      * bytes of input data are available, in which
      * case a normal return is made.
-     * <p/>
+     * <p>
      * <li>End of
      * file is detected, in which case an {@code EOFException}
      * is thrown.
-     * <p/>
+     * <p>
      * <li>An I/O error occurs, in
      * which case an {@code IOException} other
      * than {@code EOFException} is thrown.
      * </ul>
-     * <p/>
+     * <p>
      * If {@code b} is {@code null},
      * a {@code NullPointerException} is thrown.
      * If {@code b.length} is zero, then
@@ -46,13 +46,13 @@ public interface IDataInput extends AutoCloseable {
      *                              all the bytes.
      * @throws java.io.IOException  if an I/O error occurs.
      */
-    void readFully(byte b[]) throws IOException;
+    void readFully(byte b[]);
 
     /**
      * Reads {@code len}
      * bytes from
      * an input stream.
-     * <p/>
+     * <p>
      * This method
      * blocks until one of the following conditions
      * occurs:
@@ -60,21 +60,21 @@ public interface IDataInput extends AutoCloseable {
      * <li>{@code len} bytes
      * of input data are available, in which case
      * a normal return is made.
-     * <p/>
+     * <p>
      * <li>End of file
      * is detected, in which case an {@code EOFException}
      * is thrown.
-     * <p/>
+     * <p>
      * <li>An I/O error occurs, in
      * which case an {@code IOException} other
      * than {@code EOFException} is thrown.
      * </ul>
-     * <p/>
+     * <p>
      * If {@code b} is {@code null},
      * a {@code NullPointerException} is thrown.
      * If {@code off} is negative, or {@code len}
      * is negative, or {@code off+len} is
-     * greater than the length of the array {@code b},
+     * greater than the length of the set {@code b},
      * then an {@code IndexOutOfBoundsException}
      * is thrown.
      * If {@code len} is zero,
@@ -91,7 +91,7 @@ public interface IDataInput extends AutoCloseable {
      *                              all the bytes.
      * @throws IOException          if an I/O error occurs.
      */
-    void readFully(byte b[], int off, int len) throws IOException;
+    void readFully(byte b[], int off, int len);
 
     /**
      * Reads and returns one input byte.
@@ -107,11 +107,15 @@ public interface IDataInput extends AutoCloseable {
      *                              all the bytes.
      * @throws IOException          if an I/O error occurs.
      */
-    byte readByte() throws IOException;
+    byte readByte();
 
     long getPosition();
 
-    long getLength() throws IOException;
+    long getLength();
 
-    void seek(long position) throws IOException;
+    void seek(long position);
+
+    void retain();
+
+    void release();
 }

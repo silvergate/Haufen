@@ -8,6 +8,8 @@ import com.dcrux.haufen.impl.common.BaseType;
  */
 public interface IElementFactory {
     BaseType getBaseType();
+
     IElement create(IDataInput data, byte subtype, IElementProvider elementProvider);
+
     IElement create();
 }

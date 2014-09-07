@@ -15,6 +15,8 @@ public class Head {
     }
 
     public void setSubtype(byte subtype) {
+        if (subtype > 3 || subtype < 0)
+            throw new IllegalArgumentException("Subtype valid 0-3 (inclusive).");
         this.subtype = subtype;
     }
 

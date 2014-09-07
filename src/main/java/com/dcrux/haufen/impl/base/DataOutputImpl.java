@@ -1,5 +1,7 @@
 package com.dcrux.haufen.impl.base;
 
+import com.dcrux.haufen.newimpl.elements.DataException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -20,8 +22,12 @@ public class DataOutputImpl implements IDataOutput {
     }
 
     @Override
-    public void write(byte[] b) throws IOException {
-        this.outputStream.write(b);
+    public void write(byte[] b) {
+        try {
+            this.outputStream.write(b);
+        } catch (IOException e) {
+            throw new DataException("Cannot write to output stream", e);
+        }
         this.count += b.length;
     }
 
@@ -32,7 +38,7 @@ public class DataOutputImpl implements IDataOutput {
     }
 
     @Override
-    public void writeByte(int v) throws IOException {
+    public void writeByte(int v) {
         this.outputStream.write(v);
         this.count++;
     }

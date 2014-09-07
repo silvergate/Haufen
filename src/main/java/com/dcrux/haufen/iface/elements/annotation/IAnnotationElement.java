@@ -7,5 +7,6 @@ import com.dcrux.haufen.iface.elements.IElement;
  */
 public interface IAnnotationElement extends IElement {
     byte[] getData();
+
     void setData(byte[] data);
 }

@@ -5,5 +5,6 @@ package com.dcrux.haufen.newimpl;
  */
 public interface IEqualsHashcode {
     int hashCode();
+
     boolean equals(Object o);
 }

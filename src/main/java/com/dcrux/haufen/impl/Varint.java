@@ -47,7 +47,7 @@ public class Varint {
      * @param out   to write bytes to
      * @throws IOException if {@link IDataOutput} throws {@link IOException}
      */
-    public static void writeSignedVarLong(long value, IDataOutput out) throws IOException {
+    public static void writeSignedVarLong(long value, IDataOutput out) {
         // Great trick from http://code.google.com/apis/protocolbuffers/docs/encoding.html#types
         writeUnsignedVarLong((value << 1) ^ (value >> 63), out);
     }
@@ -63,7 +63,7 @@ public class Varint {
      * @param out   to write bytes to
      * @throws IOException if {@link IDataOutput} throws {@link IOException}
      */
-    public static void writeUnsignedVarLong(long value, IDataOutput out) throws IOException {
+    public static void writeUnsignedVarLong(long value, IDataOutput out) {
         while ((value & 0xFFFFFFFFFFFFFF80L) != 0L) {
             out.writeByte(((int) value & 0x7F) | 0x80);
             value >>>= 7;
@@ -82,7 +82,7 @@ public class Varint {
     /**
      * @see #writeUnsignedVarLong(long, IDataOutput)
      */
-    public static void writeUnsignedVarInt(int value, IDataOutput out) throws IOException {
+    public static void writeUnsignedVarInt(int value, IDataOutput out) {
         while ((value & 0xFFFFFF80) != 0L) {
             out.writeByte((value & 0x7F) | 0x80);
             value >>>= 7;
@@ -97,9 +97,9 @@ public class Varint {
 
     /**
      * @see #writeUnsignedVarLong(long, IDataOutput)
-     * <p/>
+     * <p>
      * This one does not use streams and is much faster.
-     * Makes a single object each time, and that object is a primitive array.
+     * Makes a single object each time, and that object is a primitive set.
      */
     public static byte[] writeUnsignedVarInt(int value) {
         byte[] byteArrayList = new byte[10];
@@ -117,6 +117,31 @@ public class Varint {
     }
 
     /**
+     * Encodes a value using the variable-length encoding from
+     * <a href="http://code.google.com/apis/protocolbuffers/docs/encoding.html">
+     * Google Protocol Buffers</a>. Zig-zag is not used, so input must not be negative.
+     * If values can be negative, use {@link #writeSignedVarLong(long, DataOutput)}
+     * instead. This method treats negative input as like a large unsigned value.
+     *
+     * @param value value to encode
+     * @throws IOException if {@link DataOutput} throws {@link IOException}
+     */
+    public static byte[] writeUnsignedVarLong(long value) {
+        byte[] longByteArrayList = new byte[15];
+        int i = 0;
+        while ((value & 0xFFFFFFFFFFFFFF80L) != 0L) {
+            longByteArrayList[i++] = ((byte) ((value & 0x7F) | 0x80));
+            value >>>= 7;
+        }
+        longByteArrayList[i] = ((byte) (value & 0x7f));
+        byte[] out = new byte[i + 1];
+        for (; i >= 0; i--) {
+            out[i] = longByteArrayList[i];
+        }
+        return out;
+    }
+
+    /**
      * @param in to read bytes from
      * @return decode value
      * @throws IOException              if {@link IDataInput} throws {@link IOException}
@@ -124,7 +149,7 @@ public class Varint {
      *                                  after 9 bytes have been read
      * @see #writeSignedVarLong(long, IDataOutput)
      */
-    public static long readSignedVarLong(IDataInput in) throws IOException {
+    public static long readSignedVarLong(IDataInput in) {
         long raw = readUnsignedVarLong(in);
         // This undoes the trick in writeSignedVarLong()
         long temp = (((raw << 63) >> 63) ^ raw) >> 1;
@@ -142,7 +167,7 @@ public class Varint {
      *                                  after 9 bytes have been read
      * @see #writeUnsignedVarLong(long, IDataOutput)
      */
-    public static long readUnsignedVarLong(IDataInput in) throws IOException {
+    public static long readUnsignedVarLong(IDataInput in) {
         long value = 0L;
         int i = 0;
         long b;
@@ -178,7 +203,7 @@ public class Varint {
      * @throws IOException              if {@link IDataInput} throws {@link IOException}
      * @see #readUnsignedVarLong(IDataInput)
      */
-    public static int readUnsignedVarInt(IDataInput in) throws IOException {
+    public static int readUnsignedVarInt(IDataInput in) {
         int value = 0;
         int i = 0;
         int b;
