@@ -36,6 +36,8 @@ public class BaseTypeNumbers {
                 return Type.table;
             case 13:
                 return Type.annotation;
+            case 15:
+                return Type.annotated;
             case 31:
                 return Type.index;
             default:
@@ -73,6 +75,8 @@ public class BaseTypeNumbers {
                 return 14;
             case annotation:
                 return 13;
+            case annotated:
+                return 15;
             case index:
                 return 31;
             default:

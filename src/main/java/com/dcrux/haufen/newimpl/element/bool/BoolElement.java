@@ -3,6 +3,7 @@ package com.dcrux.haufen.newimpl.element.bool;
 import com.dcrux.haufen.Type;
 import com.dcrux.haufen.data.IDataInput;
 import com.dcrux.haufen.data.IDataOutput;
+import com.dcrux.haufen.element.bool.IBoolElement;
 import com.dcrux.haufen.newimpl.IElementIndexProvider;
 import com.dcrux.haufen.newimpl.IElementProvider;
 import com.dcrux.haufen.newimpl.IInternalElement;
@@ -15,7 +16,7 @@ import java.util.Iterator;
 /**
  * Created by caelis on 01/09/14.
  */
-public class BoolElement extends BaseElement implements IInternalElement {
+public class BoolElement extends BaseElement implements IInternalElement, IBoolElement {
 
     private Boolean value;
 
@@ -32,6 +33,17 @@ public class BoolElement extends BaseElement implements IInternalElement {
         else
             throw new IllegalStateException("Invalid boolean value");
         dataInput.release();
+    }
+
+    @Override
+    public IBoolElement set(boolean value) {
+        this.value = value;
+        return this;
+    }
+
+    @Override
+    public boolean get() {
+        return this.value;
     }
 
     @Override
@@ -104,4 +116,5 @@ public class BoolElement extends BaseElement implements IInternalElement {
                 this.value +
                 '}';
     }
+
 }

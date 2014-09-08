@@ -57,7 +57,7 @@ public class CommonListWriter {
         return new Iterator<IInternalElement>() {
             @Override
             public boolean hasNext() {
-                return (dataInput.getPosition() < lastElement);
+                return (dataInput.getPosition() <= lastElement);
             }
 
             @Override

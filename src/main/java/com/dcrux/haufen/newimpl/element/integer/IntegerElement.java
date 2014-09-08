@@ -44,15 +44,23 @@ public class IntegerElement extends BaseElement implements IInternalElement, IIn
     @Override
     public IntegerElement set(long value) {
         this.value = value;
+        setType(IntegerType.signed);
+        return this;
+    }
+
+    @Override
+    public IIntegerElement uset(long value) {
+        this.value = value;
+        setType(IntegerType.unsigned);
         return this;
     }
 
     @Override
     public IntegerType getIntegerType() {
         if (Subtype.isFlag0(this.subtype))
-            return IntegerType.signed;
-        else
             return IntegerType.unsigned;
+        else
+            return IntegerType.signed;
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.dcrux.haufen.newimpl.serializer;
 
 import com.dcrux.haufen.Type;
 import com.dcrux.haufen.newimpl.IElementFactory;
+import com.dcrux.haufen.newimpl.element.annotated.AnnotatedElementFactory;
+import com.dcrux.haufen.newimpl.element.annotation.AnnotationElementFactory;
 import com.dcrux.haufen.newimpl.element.array.ArrayElementFactory;
 import com.dcrux.haufen.newimpl.element.bag.BagElementFactory;
 import com.dcrux.haufen.newimpl.element.binary.BinarayElementFactory;
@@ -39,6 +41,8 @@ public class FactoryProvider {
         this.factories.put(Type.set, new SetElementFactory());
         this.factories.put(Type.orderedSet, new OrderedSetElementFactory());
         this.factories.put(Type.binary, new BinarayElementFactory());
+        this.factories.put(Type.annotation, new AnnotationElementFactory());
+        this.factories.put(Type.annotated, new AnnotatedElementFactory());
     }
 
     public IElementFactory get(Type type) {

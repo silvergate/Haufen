@@ -1,8 +1,12 @@
 package com.dcrux.haufen.newimpl.element.bag;
 
+import com.dcrux.haufen.IElement;
 import com.dcrux.haufen.Type;
 import com.dcrux.haufen.data.IDataInput;
 import com.dcrux.haufen.data.IDataOutput;
+import com.dcrux.haufen.element.bag.IBagElement;
+import com.dcrux.haufen.element.bag.IBagEntry;
+import com.dcrux.haufen.element.common.ICollection;
 import com.dcrux.haufen.newimpl.IElementIndexProvider;
 import com.dcrux.haufen.newimpl.IElementProvider;
 import com.dcrux.haufen.newimpl.IInternalElement;
@@ -22,7 +26,7 @@ import java.util.function.Supplier;
 /**
  * Created by caelis on 01/09/14.
  */
-public class BagElement extends BaseElement implements IInternalElement {
+public class BagElement extends BaseElement implements IInternalElement, IBagElement {
 
     private static final int NUMBER_OF_UNIQUE_ELEMENTS_ADDITIONAL_HEADER_TS = 32;
 
@@ -249,7 +253,8 @@ public class BagElement extends BaseElement implements IInternalElement {
         return this.memory;
     }
 
-    public int add(IInternalElement element) {
+    @Override
+    public int addCount(IElement element) {
         Integer currentCount = getMemory().get(element);
         if (currentCount == null) {
             /* New unique element */
@@ -258,9 +263,15 @@ public class BagElement extends BaseElement implements IInternalElement {
             currentCount = 0;
         }
         currentCount++;
-        getMemory().put(element, currentCount);
+        getMemory().put((IInternalElement) element, currentCount);
         this.numberOfElements++;
         return currentCount;
+    }
+
+    @Override
+    public IBagElement add(IElement element) {
+        addCount(element);
+        return this;
     }
 
     public boolean remove(IInternalElement element) {
@@ -319,6 +330,35 @@ public class BagElement extends BaseElement implements IInternalElement {
     @Override
     public byte getSubtype() {
         return createSubtype();
+    }
+
+    @Override
+    public ICollection clear() {
+        this.numberOfElements=0;
+        this.numberOfUniqueElements=0;
+        getMemory().clear();
+        return this;
+    }
+
+    @Override
+    public Iterator<IBagEntry> iterator() {
+        final Iterator<BagEntry> original = getIterator();
+        return new Iterator<IBagEntry>() {
+            @Override
+            public boolean hasNext() {
+                return original.hasNext();
+            }
+
+            @Override
+            public IBagEntry next() {
+                return original.next();
+            }
+        };
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.numberOfUniqueElements==0;
     }
 
 }

@@ -3,6 +3,7 @@ package com.dcrux.haufen.newimpl.element.string;
 import com.dcrux.haufen.Type;
 import com.dcrux.haufen.data.IDataInput;
 import com.dcrux.haufen.data.IDataOutput;
+import com.dcrux.haufen.element.string.IStringElement;
 import com.dcrux.haufen.newimpl.IElementIndexProvider;
 import com.dcrux.haufen.newimpl.IElementProvider;
 import com.dcrux.haufen.newimpl.IInternalElement;
@@ -23,7 +24,7 @@ import java.util.PrimitiveIterator;
 /**
  * Created by caelis on 27/08/14.
  */
-public class StringElement extends BaseElement implements IInternalElement {
+public class StringElement extends BaseElement implements IInternalElement, IStringElement {
 
     private static final int WITH_SIZE_THRESHOLD = 16;
 
@@ -69,7 +70,7 @@ public class StringElement extends BaseElement implements IInternalElement {
         assureNotClosed();
 
         try {
-            final byte[] data = getValue().getBytes("UTF-8");
+            final byte[] data = get().getBytes("UTF-8");
             output.write(data);
 
             int codepoints = getNumberOfCodePoints();
@@ -87,7 +88,8 @@ public class StringElement extends BaseElement implements IInternalElement {
         return Collections.<IInternalElement>emptySet().iterator();
     }
 
-    public String getValue() {
+    @Override
+    public String get() {
         assureNotClosed();
         if (this.value != null) {
             return this.value;
@@ -108,12 +110,14 @@ public class StringElement extends BaseElement implements IInternalElement {
         return this.value;
     }
 
-    public void setValue(String value) {
+    @Override
+    public IStringElement set(String value) {
         assert (value != null);
         assureNotClosed();
         assureNoDataInput();
         this.value = value;
         this.numberOfCodePoints = null;
+        return this;
     }
 
     private void assureNoDataInput() {
@@ -129,7 +133,7 @@ public class StringElement extends BaseElement implements IInternalElement {
             return this.numberOfCodePoints;
         else {
             /* Does not seem to be in data input (if so, numberOfCodePoints wouldn't be null) */
-            String value = getValue();
+            String value = get();
             this.numberOfCodePoints = value.codePointCount(0, value.length());
         }
         return this.numberOfCodePoints;
@@ -150,8 +154,8 @@ public class StringElement extends BaseElement implements IInternalElement {
         StringElement otherCast = (StringElement) other;
 
         /* Compare content */
-        PrimitiveIterator.OfInt thisIterator = this.getValue().chars().iterator();
-        PrimitiveIterator.OfInt otherIterator = otherCast.getValue().chars().iterator();
+        PrimitiveIterator.OfInt thisIterator = this.get().chars().iterator();
+        PrimitiveIterator.OfInt otherIterator = otherCast.get().chars().iterator();
         while (true) {
             if (!thisIterator.hasNext()) {
                 if (otherIterator.hasNext())
@@ -189,20 +193,20 @@ public class StringElement extends BaseElement implements IInternalElement {
 
         StringElement that = (StringElement) o;
 
-        if (!getValue().equals(that.getValue())) return false;
+        if (!get().equals(that.get())) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return getValue().hashCode();
+        return get().hashCode();
     }
 
     @Override
     public String toString() {
-        return "StringElement{" +
-                getValue() +
-                '}';
+        return "StringElement{'" +
+                get() +
+                "'}";
     }
 }

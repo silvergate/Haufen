@@ -1,8 +1,10 @@
 package com.dcrux.haufen.newimpl.element.map;
 
+import com.dcrux.haufen.IElement;
 import com.dcrux.haufen.Type;
 import com.dcrux.haufen.data.IDataInput;
 import com.dcrux.haufen.data.IDataOutput;
+import com.dcrux.haufen.element.map.IMapElement;
 import com.dcrux.haufen.newimpl.IElementIndexProvider;
 import com.dcrux.haufen.newimpl.IElementProvider;
 import com.dcrux.haufen.newimpl.IInternalElement;
@@ -12,6 +14,7 @@ import com.dcrux.haufen.newimpl.element.BoxedValue;
 import com.dcrux.haufen.newimpl.utils.BinaryUtil;
 import com.dcrux.haufen.newimpl.utils.InverseDataInput;
 import com.dcrux.haufen.newimpl.utils.Varint;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -22,7 +25,7 @@ import java.util.function.Supplier;
 /**
  * Created by caelis on 01/09/14.
  */
-public class MapElement extends BaseElement implements IInternalElement {
+public class MapElement extends BaseElement implements IInternalElement, IMapElement {
 
     private static final int NUMBER_OF_ELEMENTS_FOR_ADDITIONAL_HEADER = 32;
 
@@ -264,9 +267,26 @@ public class MapElement extends BaseElement implements IInternalElement {
             throw new IllegalStateException("Cannot call on unordered element");
     }
 
-    public boolean put(IInternalElement key, IInternalElement value) {
+    private boolean putInternal(IInternalElement key, IInternalElement value) {
         IInternalElement oldElement = getMemory().put(key, value);
         return oldElement != null;
+    }
+
+    @Override
+    public IMapElement put(IElement key, IElement value) {
+        putInternal((IInternalElement)key, (IInternalElement)value);
+        return this;
+    }
+
+    @Override
+    public boolean putInfo(IElement key, IElement value) {
+        return putInternal((IInternalElement)key, (IInternalElement)value);
+    }
+
+    @Nullable
+    @Override
+    public IElement get(IElement key) {
+        return getMemory().get(key);
     }
 
     private LinkedHashMap<IInternalElement, IInternalElement> getMemoryOrdered() {
@@ -286,5 +306,4 @@ public class MapElement extends BaseElement implements IInternalElement {
         final IInternalElement removedValue = getMemory().remove(key);
         return removedValue != null;
     }
-
 }

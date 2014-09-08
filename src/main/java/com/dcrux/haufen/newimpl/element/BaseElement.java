@@ -20,7 +20,7 @@ public abstract class BaseElement implements IInternalElement, IElement {
             if (!(this instanceof IAnnotatedElement)) {
                 throw new IllegalArgumentException("This element is of wrong type (should not happen).");
             }
-            thisElement = (IAnnotatedElement) this;
+            thisElement = ((IAnnotatedElement) this).get();
         } else {
             thisElement = this;
         }
@@ -39,7 +39,7 @@ public abstract class BaseElement implements IInternalElement, IElement {
             if (!(this instanceof IAnnotatedElement)) {
                 throw new IllegalArgumentException("This element is of wrong type (should not happen).");
             }
-            thisElement = (IAnnotatedElement) this;
+            thisElement = ((IAnnotatedElement) this).get();
         } else {
             thisElement = this;
         }

@@ -12,5 +12,7 @@ public interface IIntegerElement extends IElement {
 
     IIntegerElement set(long value);
 
+    IIntegerElement uset(long value);
+
     long get();
 }
