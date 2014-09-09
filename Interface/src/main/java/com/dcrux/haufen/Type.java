@@ -4,6 +4,7 @@ package com.dcrux.haufen;
  * Created by caelis on 22/07/14.
  */
 public enum Type {
+    //TODO: Need 'enum' ?
     integer,
     number, //TODO: Missing
     string,
@@ -22,9 +23,9 @@ public enum Type {
     // ordered: true, duplicates: false
     orderedSet,
     // ordered: true, duplicates: true
-    array,
+    list,
     table, //TODO: MISSING
-    annotation, //TODO: MISSING
-    annotated, //TODO: Missing
+    annotation,
+    annotated,
     index
 }

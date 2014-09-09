@@ -9,4 +9,6 @@ public interface IStringElement extends IElement {
     IStringElement set(String value);
 
     String get();
+
+    int getNumberOfCodePoints();
 }

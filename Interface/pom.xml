@@ -11,5 +11,12 @@
 
     <artifactId>interface</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>annotations</artifactId>
+            <version>9.0.4</version>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -1,20 +1,26 @@
 package com.dcrux.haufen.element.common;
 
-import com.dcrux.haufen.IElement;
-
 import java.util.Iterator;
 
 /**
  * Created by caelis on 07/09/14.
  */
-public interface ICollection<TElement> extends IElement {
-    //TODO: Split into a readonly and writable version?
+public interface ICollection<TEntry, TThis extends ICollection<TEntry, TThis>> {
+    TThis clear(); //TODO: change return to 'boolean' or 'void' (better void, since java don't return bool either) since you usually don't chain clear calls
 
-    ICollection clear();
-
-    Iterator<TElement> iterator();
+    Iterator<TEntry> iterator();
 
     boolean isEmpty();
 
-    //TODO: int getSize() ?
+    int getNumberOfEntries();
+
+    // Returns true if the collection has been modified
+    boolean remove(TEntry element);
+
+    TThis add(TEntry element);
+
+    // Returns true if this collection contains the given element at least once
+    boolean contains(TEntry element);
+
+    int getCount(TEntry element);
 }

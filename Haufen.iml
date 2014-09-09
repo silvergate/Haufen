@@ -21,7 +21,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2" level="project" />
-    <orderEntry type="module" module-name="Interface" />
   </component>
 </module>
 

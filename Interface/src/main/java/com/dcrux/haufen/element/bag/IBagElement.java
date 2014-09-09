@@ -7,7 +7,7 @@ import com.dcrux.haufen.element.common.ICollection;
  * Created by caelis on 08/09/14.
  */
 
-public interface IBagElement extends IElement, ICollection<IBagEntry> {
+public interface IBagElement extends IElement, ICollection<IBagEntry, IBagElement> {
     int addCount(IElement element);
 
     IBagElement add(IElement element);
