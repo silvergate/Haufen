@@ -15,13 +15,21 @@ import java.util.*;
 public class Serializer {
     public void serialize(IDataOutput dataOutput, IInternalElement element) {
         /* Collect dependencies */
-        final Set<IInternalElement> dependencies = new HashSet<>();
-        collectDependencies(element, dependencies);
+        final Map<IInternalElement, Integer> dependenciesToCount = new HashMap<>();
+        collectDependencies(element, dependenciesToCount);
 
         /* Canonical sort */
         final List<IInternalElement> sortedDependencies = new ArrayList<>();
-        sortedDependencies.addAll(dependencies);
-        Collections.sort(sortedDependencies, (o1, o2) -> o1.canonicalCompareTo(o2));
+        sortedDependencies.addAll(dependenciesToCount.keySet());
+        Collections.sort(sortedDependencies, (o1, o2) -> {
+            int o1Count = dependenciesToCount.get(o1);
+            int o2Count = dependenciesToCount.get(o2);
+            /* First sort by reference count and then by canonical compare. This makes sure, that often reference items get a low element number. */
+            if (o1Count != o2Count)
+                return o2Count - o1Count;
+            else
+                return o1.canonicalCompareTo(o2);
+        });
 
         /* Given element is always at index 0 */
         sortedDependencies.add(0, element);
@@ -63,13 +71,19 @@ public class Serializer {
         indexElement.write(dataOutput, elementIndexProvider, elementProvider);
     }
 
-    private void collectDependencies(IInternalElement element, Set<IInternalElement> dependencies) {
+    private void collectDependencies(IInternalElement element, Map<IInternalElement, Integer> dependenciesToCount) {
         final Iterator<IInternalElement> elements = element.getDependencies();
         while (elements.hasNext()) {
             final IInternalElement iteratorElement = elements.next();
-            boolean newDependency = dependencies.add(iteratorElement);
-            if (newDependency) {
-                collectDependencies(iteratorElement, dependencies);
+            final Integer currentCount = dependenciesToCount.get(iteratorElement);
+            if (currentCount == null) {
+                /* A new element, set count to 1 */
+                dependenciesToCount.put(iteratorElement, 1);
+                /* Collect reinsient dependencies */
+                collectDependencies(iteratorElement, dependenciesToCount);
+            } else {
+                /* Already in list, increase count */
+                dependenciesToCount.put(iteratorElement, currentCount + 1);
             }
         }
     }

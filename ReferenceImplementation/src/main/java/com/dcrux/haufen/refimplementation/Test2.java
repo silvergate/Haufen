@@ -44,7 +44,16 @@ public class Test2 {
         me1.put(haufen.create(Types.STRING).set("age"), haufen.create(Types.INTEGER).set((21)))
                 .put(haufen.create(Types.STRING).set("firstName"), haufen.create(Types.STRING).set("Simon"))
                 .put(haufen.create(Types.STRING).set("male"), haufen.create(Types.BOOL).set(true))
-                .put(haufen.create(Types.STRING).set("myself"), me1);
+                .put(haufen.create(Types.STRING).set("myself"), me1)
+                .put(haufen.create(Types.STRING).set("OftenReferenced1"), haufen.create(Types.STRING).set("referenced"))
+                .put(haufen.create(Types.STRING).set("OftenReferenced2"), haufen.create(Types.STRING).set("referenced"))
+                .put(haufen.create(Types.STRING).set("number"), haufen.create(Types.NUMBER).set(4, 5))
+                .put(haufen.create(Types.STRING).set("numberd"), haufen.create(Types.NUMBER).setDecimal(79, 3));
+
+                /*
+        for (int i=0; i<100; i++) {
+            me1.put(haufen.create(Types.STRING).set("GEN" + i), haufen.create(Types.STRING).set("DaaDaDa"));
+        }*/
 
         IAnnotationElement annotation1 = haufen.create(Types.ANNOTATION).set("Hallo".getBytes());
         IAnnotatedElement annotatedString = haufen.create(Types.ANNOTATED).set(haufen.create(Types.STRING).set("I'm Annotated")).annotate(annotation1);

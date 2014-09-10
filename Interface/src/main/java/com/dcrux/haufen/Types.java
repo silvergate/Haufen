@@ -8,6 +8,7 @@ import com.dcrux.haufen.element.integer.IIntegerElement;
 import com.dcrux.haufen.element.list.IListElement;
 import com.dcrux.haufen.element.map.IMapElement;
 import com.dcrux.haufen.element.map.IOrderedMapElement;
+import com.dcrux.haufen.element.number.INumberElement;
 import com.dcrux.haufen.element.set.IOrderedSetElement;
 import com.dcrux.haufen.element.set.ISetElement;
 import com.dcrux.haufen.element.string.IStringElement;
@@ -21,6 +22,7 @@ public final class Types<T extends IElement> {
     public static final Types<IAnnotatedElement> ANNOTATED = new Types<>(Type.annotated);
     public static final Types<IAnnotationElement> ANNOTATION = new Types<>(Type.annotation);
     public static final Types<IStringElement> STRING = new Types<>(Type.string);
+    public static final Types<INumberElement> NUMBER = new Types<>(Type.number);
 
     public static final Types<IBagElement> BAG = new Types<>(Type.bag);
 

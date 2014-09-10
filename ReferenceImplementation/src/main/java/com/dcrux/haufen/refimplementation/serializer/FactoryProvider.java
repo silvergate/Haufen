@@ -12,6 +12,7 @@ import com.dcrux.haufen.refimplementation.element.index.IndexElementFactory;
 import com.dcrux.haufen.refimplementation.element.integer.IntegerElementFactory;
 import com.dcrux.haufen.refimplementation.element.map.MapElementFactory;
 import com.dcrux.haufen.refimplementation.element.map.OrderedMapElementFactory;
+import com.dcrux.haufen.refimplementation.element.number.NumberElementFactory;
 import com.dcrux.haufen.refimplementation.element.set.OrderedSetElementFactory;
 import com.dcrux.haufen.refimplementation.element.set.SetElementFactory;
 import com.dcrux.haufen.refimplementation.element.string.StringElementFactory;
@@ -43,6 +44,7 @@ public class FactoryProvider {
         this.factories.put(Type.binary, new BinarayElementFactory());
         this.factories.put(Type.annotation, new AnnotationElementFactory());
         this.factories.put(Type.annotated, new AnnotatedElementFactory());
+        this.factories.put(Type.number, new NumberElementFactory());
     }
 
     public IElementFactory get(Type type) {

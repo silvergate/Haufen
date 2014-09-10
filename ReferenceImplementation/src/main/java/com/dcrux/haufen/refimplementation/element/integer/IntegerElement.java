@@ -79,8 +79,10 @@ public class IntegerElement extends BaseElement implements IInternalElement, IIn
         switch (integerType) {
             case signed:
                 this.subtype = 0;
+                break;
             case unsigned:
                 this.subtype = Subtype.setFlag0(this.subtype);
+                break;
         }
         return this;
     }

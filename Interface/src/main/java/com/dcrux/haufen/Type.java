@@ -6,7 +6,7 @@ package com.dcrux.haufen;
 public enum Type {
     //TODO: Need 'enum' ?
     integer,
-    number, //TODO: Missing
+    number,
     string,
     bool,
     binary,
