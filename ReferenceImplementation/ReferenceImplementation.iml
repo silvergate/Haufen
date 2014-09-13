@@ -14,6 +14,7 @@
     <orderEntry type="module" module-name="Interface" />
     <orderEntry type="library" name="Maven: com.intellij:annotations:9.0.4" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2" level="project" />
+    <orderEntry type="module" module-name="KugelReferenceImplementation" />
   </component>
 </module>
 

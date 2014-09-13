@@ -18,5 +18,7 @@ public interface IBaseMapElement extends IElement, ICollection<IMapEntry<IElemen
     @Nullable
     IElement get(IElement key);
 
+    boolean exists(IElement key);
+
     IElementPair<IElement, IElement> getAccessorForValue(IElement key);
 }

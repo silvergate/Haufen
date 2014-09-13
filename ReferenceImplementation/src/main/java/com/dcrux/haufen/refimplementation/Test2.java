@@ -10,6 +10,8 @@ import com.dcrux.haufen.element.bag.IBagElement;
 import com.dcrux.haufen.element.integer.IIntegerElement;
 import com.dcrux.haufen.element.map.IMapElement;
 import com.dcrux.haufen.element.string.IStringElement;
+import com.dcrux.haufen.kugel.refimplementation.ICheck;
+import com.dcrux.haufen.kugel.refimplementation.Kugel;
 import com.dcrux.haufen.refimplementation.base.DataInputImpl;
 import com.dcrux.haufen.refimplementation.base.DataOutputImpl;
 import com.dcrux.haufen.refimplementation.element.string.StringElement;
@@ -26,6 +28,8 @@ public class Test2 {
 
     public static void main(String[] fsd) throws Exception {
         System.err.println("WICHTIGES TODO: Höchste Prop beim Sortieren von elementen im Index sollte die Referenzierungshäufigkeit sein (da wenn oft referenziert, sollte es eine kleine Zahl haben!)");
+
+        System.out.println(-1l + Long.MIN_VALUE);
 
         IHaufen haufen = new Haufen();
 
@@ -83,5 +87,12 @@ public class Test2 {
                 annotated.as(Types.ANNOTATED).annotations().forEachRemaining(anno -> System.out.println("Annotation: " + anno));
             }
         });
+
+        /* Valid */
+        Kugel k = new Kugel(haufen);
+        ICheck check = k.create("int");
+
+        System.out.println(check);
+        System.out.println(check.check(haufen.create(Types.INTEGER).set(0)));
     }
 }

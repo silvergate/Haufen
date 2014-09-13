@@ -424,6 +424,11 @@ public class MapElement extends BaseElement implements IInternalElement, IMapEle
         return getMemory().get(ElementCastUtil.getInstance().cast(key));
     }
 
+    @Override
+    public boolean exists(IElement key) {
+        return getMemory().containsKey(ElementCastUtil.getInstance().cast(key));
+    }
+
     private LinkedHashMap<IInternalElement, IInternalElement> getMemoryOrdered() {
         assureOrdered();
         return (LinkedHashMap<IInternalElement, IInternalElement>) getMemory();

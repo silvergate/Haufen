@@ -144,6 +144,30 @@ public class IntegerElement extends BaseElement implements IInternalElement, IIn
         throw new IllegalStateException("Unknown type");
     }
 
+    private long convertForCmp(long value, boolean unsigned) {
+        if (unsigned) {
+            return value + Long.MIN_VALUE;
+        } else {
+            if (value < 0) {
+                return -value + Long.MIN_VALUE;
+            } else {
+                return value + Long.MIN_VALUE;
+            }
+        }
+    }
+
+    //TODO: Not sure if this is correct...
+    @Override
+    public int compareValueTo(IIntegerElement element) {
+        long x = get();
+        long y = element.get();
+
+        x = convertForCmp(x, getIntegerType() == IntegerType.unsigned);
+        y = convertForCmp(y, element.getIntegerType() == IntegerType.unsigned);
+
+        return (x < y) ? -1 : ((x == y) ? 0 : 1);
+    }
+
     @Override
     public boolean isClosed() {
         return this.subtype == -1;

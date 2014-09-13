@@ -15,4 +15,6 @@ public interface IIntegerElement extends IElement {
     IIntegerElement uset(long value);
 
     long get();
+
+    int compareValueTo(IIntegerElement other);
 }

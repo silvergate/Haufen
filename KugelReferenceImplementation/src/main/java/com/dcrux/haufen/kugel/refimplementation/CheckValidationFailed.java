@@ -1,4 +1,4 @@
-package com.dcrux.haufen.kugel.refimplementation.check;
+package com.dcrux.haufen.kugel.refimplementation;
 
 /**
  * Created by caelis on 13/09/14.
@@ -29,5 +29,12 @@ public class CheckValidationFailed {
     @Override
     public int hashCode() {
         return message.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "CheckValidationFailed{"
+                + message +
+                "}";
     }
 }

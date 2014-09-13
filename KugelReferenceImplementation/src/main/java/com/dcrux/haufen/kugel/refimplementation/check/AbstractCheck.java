@@ -1,13 +1,28 @@
 package com.dcrux.haufen.kugel.refimplementation.check;
 
 import com.dcrux.haufen.IElement;
+import com.dcrux.haufen.IHaufen;
 import com.dcrux.haufen.Type;
+import com.dcrux.haufen.kugel.refimplementation.CheckValidationFailed;
+import com.dcrux.haufen.kugel.refimplementation.ICheck;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by caelis on 13/09/14.
  */
-public class AbstractCheck<T extends IElement> {
+public class AbstractCheck<T extends IElement, TConfig extends IElement> implements ICheck {
+
+    private final IHaufen haufen;
+    private TConfig configElement;
+
+    public AbstractCheck(IHaufen haufen, TConfig configElement) {
+        this.haufen = haufen;
+        this.configElement = configElement;
+    }
+
+    protected final IHaufen getHaufen() {
+        return haufen;
+    }
 
     @Nullable
     protected Type getRequiredType() {
@@ -45,5 +60,16 @@ public class AbstractCheck<T extends IElement> {
 
     public long getComplexity() {
         return 1;
+    }
+
+    public TConfig getConfig() {
+        return this.configElement;
+    }
+
+    @Override
+    public String toString() {
+        return "Check{" +
+                configElement +
+                '}';
     }
 }
