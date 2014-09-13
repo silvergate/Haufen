@@ -23,6 +23,7 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="Interface" />
+        <module name="KugelReferenceImplementation" />
         <module name="ReferenceImplementation" />
       </profile>
     </annotationProcessing>

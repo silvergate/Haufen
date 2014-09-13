@@ -2,12 +2,15 @@ package com.dcrux.haufen.refimplementation.element.map;
 
 import com.dcrux.haufen.IElement;
 import com.dcrux.haufen.Type;
+import com.dcrux.haufen.Types;
 import com.dcrux.haufen.data.IDataInput;
 import com.dcrux.haufen.data.IDataOutput;
+import com.dcrux.haufen.element.common.IElementPair;
 import com.dcrux.haufen.element.map.IBaseMapElement;
 import com.dcrux.haufen.element.map.IMapElement;
 import com.dcrux.haufen.element.map.IMapEntry;
 import com.dcrux.haufen.element.map.IMapKeys;
+import com.dcrux.haufen.refimplementation.IElementCreator;
 import com.dcrux.haufen.refimplementation.IElementIndexProvider;
 import com.dcrux.haufen.refimplementation.IElementProvider;
 import com.dcrux.haufen.refimplementation.IInternalElement;
@@ -32,11 +35,70 @@ import java.util.function.Supplier;
 public class MapElement extends BaseElement implements IInternalElement, IMapElement {
 
     private static final int NUMBER_OF_ELEMENTS_FOR_ADDITIONAL_HEADER = 32;
+    private final IMapKeys mapKeys = new IMapKeys() {
+        private final MapElement outer = MapElement.this;
 
+        @Override
+        public IMapKeys clear() {
+            outer.clear();
+            return this;
+        }
+
+        @Override
+        public Iterator<IElement> iterator() {
+            final Iterator<IMapEntry<IElement, IElement>> original = outer.iterator();
+            return new Iterator<IElement>() {
+                @Override
+                public boolean hasNext() {
+                    return original.hasNext();
+                }
+
+                @Override
+                public IElement next() {
+                    return original.next().getKey();
+                }
+            };
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return outer.isEmpty();
+        }
+
+        @Override
+        public int getNumberOfEntries() {
+            return outer.getNumberOfEntries();
+        }
+
+        @Override
+        public boolean remove(IElement element) {
+            return outer.remove(ElementCastUtil.getInstance().cast(element));
+        }
+
+        @Override
+        public IMapKeys add(IElement element) {
+            throw new UnsupportedOperationException("Add is not supported on the key set of a map");
+        }
+
+        @Override
+        public boolean contains(IElement element) {
+            return outer.contains(ElementCastUtil.getInstance().cast(element));
+        }
+
+        @Override
+        public int getCount(IElement element) {
+            if (outer.contains(ElementCastUtil.getInstance().cast(element)))
+                return 1;
+            else
+                return 0;
+        }
+    };
     private Map<IInternalElement, IInternalElement> memory;
     private int numberOfElements;
+    private IElementCreator elementCreator;
 
-    public MapElement(boolean initialized) {
+    public MapElement(boolean initialized, IElementCreator elementCreator) {
+        this.elementCreator = elementCreator;
         if (initialized) {
             this.memory = createMemoryMap();
             this.numberOfElements = 0;
@@ -408,67 +470,33 @@ public class MapElement extends BaseElement implements IInternalElement, IMapEle
         return getMemory().isEmpty();
     }
 
-    private final IMapKeys mapKeys = new IMapKeys() {
-        private final MapElement outer = MapElement.this;
-
-        @Override
-        public IMapKeys clear() {
-            outer.clear();
-            return this;
-        }
-
-        @Override
-        public Iterator<IElement> iterator() {
-            final Iterator<IMapEntry<IElement, IElement>> original = outer.iterator();
-            return new Iterator<IElement>() {
-                @Override
-                public boolean hasNext() {
-                    return original.hasNext();
-                }
-
-                @Override
-                public IElement next() {
-                    return original.next().getKey();
-                }
-            };
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return outer.isEmpty();
-        }
-
-        @Override
-        public int getNumberOfEntries() {
-            return outer.getNumberOfEntries();
-        }
-
-        @Override
-        public boolean remove(IElement element) {
-            return outer.remove(ElementCastUtil.getInstance().cast(element));
-        }
-
-        @Override
-        public IMapKeys add(IElement element) {
-            throw new UnsupportedOperationException("Add is not supported on the key set of a map");
-        }
-
-        @Override
-        public boolean contains(IElement element) {
-            return outer.contains(ElementCastUtil.getInstance().cast(element));
-        }
-
-        @Override
-        public int getCount(IElement element) {
-            if (outer.contains(ElementCastUtil.getInstance().cast(element)))
-                return 1;
-            else
-                return 0;
-        }
-    };
-
     @Override
     public IMapKeys getKeys() {
         return this.mapKeys;
+    }
+
+    @Nullable
+    @Override
+    public IElement access(IElement type, IElement accessor) {
+        if (type.is(Type.empty)) {
+            return getMemory().get(ElementCastUtil.getInstance().cast(accessor));
+        } else
+            return null;
+    }
+
+    @Override
+    public IElementPair<IElement, IElement> getAccessorForValue(final IElement key) {
+        final IElement first = this.elementCreator.create(Types.EMPTY);
+        return new IElementPair<IElement, IElement>() {
+            @Override
+            public IElement getFirst() {
+                return first;
+            }
+
+            @Override
+            public IElement getSecond() {
+                return key;
+            }
+        };
     }
 }

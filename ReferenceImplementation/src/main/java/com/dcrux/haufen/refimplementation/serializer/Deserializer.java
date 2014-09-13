@@ -2,6 +2,7 @@ package com.dcrux.haufen.refimplementation.serializer;
 
 import com.dcrux.haufen.Type;
 import com.dcrux.haufen.data.IDataInput;
+import com.dcrux.haufen.refimplementation.IElementCreator;
 import com.dcrux.haufen.refimplementation.IElementFactory;
 import com.dcrux.haufen.refimplementation.IElementProvider;
 import com.dcrux.haufen.refimplementation.IInternalElement;
@@ -18,6 +19,7 @@ import java.util.Map;
 public class Deserializer {
     private final FactoryProvider factoryProvider = new FactoryProvider();
 
+    private final IElementCreator elementCreator;
     private IDataInput dataInput;
     private IndexElement indexElement;
     private Map<Integer, IInternalElement> elementMap = new HashMap<>();
@@ -30,10 +32,14 @@ public class Deserializer {
         return element;
     };
 
+    public Deserializer(IElementCreator elementCreator) {
+        this.elementCreator = elementCreator;
+    }
+
     private IInternalElement loadToMap(int index) {
         IndexEntry indexEntry = this.indexElement.getEntries().get(index);
         IElementFactory elementFactory = factoryProvider.get(indexEntry.getType());
-        IInternalElement element = elementFactory.createUninitialized();
+        IInternalElement element = elementFactory.createUninitialized(this.elementCreator);
         this.elementMap.put(index, element);
 
         /* Initialize */
@@ -48,7 +54,7 @@ public class Deserializer {
     public IInternalElement deserialize(IDataInput dataInput) {
         assert (this.indexElement == null);
         this.dataInput = dataInput;
-        this.indexElement = (IndexElement) factoryProvider.get(Type.index).createUninitialized();
+        this.indexElement = (IndexElement) factoryProvider.get(Type.index).createUninitialized(this.elementCreator);
         this.indexElement.initialize(dataInput, (byte) 0, this.elementProvider);
 
         return loadToMap(0);

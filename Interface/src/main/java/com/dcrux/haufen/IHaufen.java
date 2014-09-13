@@ -10,6 +10,8 @@ import com.dcrux.haufen.data.IDataOutput;
 public interface IHaufen {
     <T extends IElement> T create(Types<T> type);
 
+    <T extends IElement> T create(Type type, Class<T> clazz);
+
     void serialize(IDataOutput dataOutput, IElement element);
 
     IDisposableElement deserialize(IDataInput dataInput);

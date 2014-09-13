@@ -8,6 +8,8 @@ import com.dcrux.haufen.element.common.ICollection;
  */
 
 public interface IBagElement extends IElement, ICollection<IBagEntry, IBagElement> {
+
+    // TODO: Implement ITypedAccessor
     int addCount(IElement element);
 
     IBagElement add(IElement element);

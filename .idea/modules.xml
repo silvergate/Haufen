@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Haufen.iml" filepath="$PROJECT_DIR$/Haufen.iml" />
       <module fileurl="file://$PROJECT_DIR$/Interface/Interface.iml" filepath="$PROJECT_DIR$/Interface/Interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/KugelReferenceImplementation/KugelReferenceImplementation.iml" filepath="$PROJECT_DIR$/KugelReferenceImplementation/KugelReferenceImplementation.iml" />
       <module fileurl="file://$PROJECT_DIR$/ReferenceImplementation/ReferenceImplementation.iml" filepath="$PROJECT_DIR$/ReferenceImplementation/ReferenceImplementation.iml" />
     </modules>
   </component>

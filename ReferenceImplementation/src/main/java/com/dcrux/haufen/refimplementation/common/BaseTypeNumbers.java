@@ -32,6 +32,8 @@ public class BaseTypeNumbers {
                 return Type.orderedSet;
             case 12:
                 return Type.list;
+            case 16:
+                return Type.empty;
             case 14:
                 return Type.table;
             case 13:
@@ -77,6 +79,8 @@ public class BaseTypeNumbers {
                 return 13;
             case annotated:
                 return 15;
+            case empty:
+                return 16;
             case index:
                 return 31;
             default:

@@ -11,5 +11,9 @@ public interface IElement extends IEqualsHashcode {
 
     <T extends IElement> T as(Types<T> type);
 
+    <T extends IElement> T as(Type type, Class<T> clazz);
+
+    IElement that();
+
     boolean is(Type type);
 }

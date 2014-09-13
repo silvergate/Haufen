@@ -2,8 +2,10 @@ package com.dcrux.haufen.refimplementation.element.set;
 
 import com.dcrux.haufen.IElement;
 import com.dcrux.haufen.Type;
+import com.dcrux.haufen.Types;
 import com.dcrux.haufen.data.IDataInput;
 import com.dcrux.haufen.data.IDataOutput;
+import com.dcrux.haufen.element.integer.IIntegerElement;
 import com.dcrux.haufen.element.set.IBaseSetElement;
 import com.dcrux.haufen.element.set.IOrderedSetElement;
 import com.dcrux.haufen.refimplementation.IElementIndexProvider;
@@ -14,6 +16,7 @@ import com.dcrux.haufen.refimplementation.element.BaseElement;
 import com.dcrux.haufen.refimplementation.element.BoxedValue;
 import com.dcrux.haufen.refimplementation.element.common.CommonListWriter;
 import com.dcrux.haufen.refimplementation.utils.ElementCastUtil;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -26,17 +29,17 @@ public class OrderedSetElement extends BaseElement implements IInternalElement, 
 
     private Set<IInternalElement> memory;
 
+    public OrderedSetElement(boolean initialized) {
+        if (initialized) {
+            this.memory = createMemoryMap();
+        }
+    }
+
     @Override
     public void initialize(IDataInput data, byte subtype, IElementProvider elementProvider) {
         this.memory = createMemoryMap();
         CommonListWriter.getInstance().addToList(this.memory, CommonListWriter.getInstance().read(data, hasAdditionalHeader(subtype), elementProvider));
         data.release();
-    }
-
-    public OrderedSetElement(boolean initialized) {
-        if (initialized) {
-            this.memory = createMemoryMap();
-        }
     }
 
     private Set<IInternalElement> createMemoryMap() {
@@ -211,5 +214,22 @@ public class OrderedSetElement extends BaseElement implements IInternalElement, 
             return 1;
         else
             return 0;
+    }
+
+    @Nullable
+    @Override
+    public IElement access(IElement accessor) {
+        if (!accessor.is(Type.integer))
+            return null;
+        final IIntegerElement intAccessor = accessor.as(Types.INTEGER);
+        if (intAccessor.get() < 0 || intAccessor.get() > getMemory().size())
+            return null;
+        final Iterator<IElement> iterator = iterator();
+        for (int i = 0; i < getMemory().size(); i++) {
+            IElement element = iterator.next();
+            if (i == intAccessor.get())
+                return element;
+        }
+        throw new IllegalStateException("Implementation error. Element not found but should be in list.");
     }
 }

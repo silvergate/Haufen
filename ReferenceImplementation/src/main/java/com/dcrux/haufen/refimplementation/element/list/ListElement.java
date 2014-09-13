@@ -1,10 +1,12 @@
-package com.dcrux.haufen.refimplementation.element.array;
+package com.dcrux.haufen.refimplementation.element.list;
 
 import com.dcrux.haufen.IElement;
 import com.dcrux.haufen.Type;
+import com.dcrux.haufen.Types;
 import com.dcrux.haufen.data.IDataInput;
 import com.dcrux.haufen.data.IDataOutput;
 import com.dcrux.haufen.element.list.IListElement;
+import com.dcrux.haufen.refimplementation.IElementCreator;
 import com.dcrux.haufen.refimplementation.IElementIndexProvider;
 import com.dcrux.haufen.refimplementation.IElementProvider;
 import com.dcrux.haufen.refimplementation.IInternalElement;
@@ -13,6 +15,7 @@ import com.dcrux.haufen.refimplementation.element.BaseElement;
 import com.dcrux.haufen.refimplementation.element.BoxedValue;
 import com.dcrux.haufen.refimplementation.element.common.CommonListWriter;
 import com.dcrux.haufen.refimplementation.utils.ElementCastUtil;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,8 +28,10 @@ import java.util.List;
 public class ListElement extends BaseElement implements IInternalElement, IListElement {
 
     private List<IInternalElement> memory;
+    private IElementCreator elementCreator;
 
-    public ListElement(boolean initialized) {
+    public ListElement(boolean initialized, IElementCreator elementCreator) {
+        this.elementCreator = elementCreator;
         if (initialized) {
             this.memory = createMemoryMap();
         }
@@ -219,6 +224,11 @@ public class ListElement extends BaseElement implements IInternalElement, IListE
     }
 
     @Override
+    public IElement getAccessor(int index) {
+        return this.elementCreator.create(Types.INTEGER).set(index);
+    }
+
+    @Override
     public boolean remove(IElement element) {
         return getMemory().remove(ElementCastUtil.getInstance().cast(element));
     }
@@ -236,5 +246,16 @@ public class ListElement extends BaseElement implements IInternalElement, IListE
     @Override
     public int getCount(IElement element) {
         return Collections.frequency(getMemory(), ElementCastUtil.getInstance().cast(element));
+    }
+
+    @Nullable
+    @Override
+    public IElement access(IElement accessor) {
+        if (!accessor.is(Type.integer))
+            return null;
+        final int size = getMemory().size();
+        if (accessor.as(Types.INTEGER).get() > size - 1 || accessor.as(Types.INTEGER).get() < 0)
+            return null;
+        return getMemory().get((int) accessor.as(Types.INTEGER).get());
     }
 }

@@ -7,5 +7,6 @@ import com.dcrux.haufen.IElement;
  */
 public interface IBoolElement extends IElement {
     IBoolElement set(boolean value);
+
     boolean get();
 }

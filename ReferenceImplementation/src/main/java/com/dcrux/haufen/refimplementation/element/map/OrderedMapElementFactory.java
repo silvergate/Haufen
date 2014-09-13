@@ -1,6 +1,7 @@
 package com.dcrux.haufen.refimplementation.element.map;
 
 import com.dcrux.haufen.Type;
+import com.dcrux.haufen.refimplementation.IElementCreator;
 import com.dcrux.haufen.refimplementation.IElementFactory;
 import com.dcrux.haufen.refimplementation.IInternalElement;
 
@@ -14,12 +15,12 @@ public class OrderedMapElementFactory implements IElementFactory {
     }
 
     @Override
-    public IInternalElement createUninitialized() {
-        return new OrderedMapElement(false);
+    public IInternalElement createUninitialized(IElementCreator elementCreator) {
+        return new OrderedMapElement(false, elementCreator);
     }
 
     @Override
-    public IInternalElement create() {
-        return new OrderedMapElement(true);
+    public IInternalElement create(IElementCreator elementCreator) {
+        return new OrderedMapElement(true, elementCreator);
     }
 }

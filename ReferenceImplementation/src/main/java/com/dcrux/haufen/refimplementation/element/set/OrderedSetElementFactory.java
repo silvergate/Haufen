@@ -1,6 +1,7 @@
 package com.dcrux.haufen.refimplementation.element.set;
 
 import com.dcrux.haufen.Type;
+import com.dcrux.haufen.refimplementation.IElementCreator;
 import com.dcrux.haufen.refimplementation.IElementFactory;
 import com.dcrux.haufen.refimplementation.IInternalElement;
 
@@ -14,12 +15,12 @@ public class OrderedSetElementFactory implements IElementFactory {
     }
 
     @Override
-    public IInternalElement createUninitialized() {
+    public IInternalElement createUninitialized(IElementCreator elementCreator) {
         return new OrderedSetElement(false);
     }
 
     @Override
-    public IInternalElement create() {
+    public IInternalElement create(IElementCreator elementCreator) {
         return new OrderedSetElement(true);
     }
 }

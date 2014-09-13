@@ -8,7 +8,7 @@ import com.dcrux.haufen.Type;
 public interface IElementFactory {
     Type getBaseType();
 
-    IInternalElement createUninitialized();
+    IInternalElement createUninitialized(IElementCreator elementCreator);
 
-    IInternalElement create();
+    IInternalElement create(IElementCreator elementCreator);
 }

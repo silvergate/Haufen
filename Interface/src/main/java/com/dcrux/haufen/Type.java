@@ -5,6 +5,7 @@ package com.dcrux.haufen;
  */
 public enum Type {
     //TODO: Need 'enum' ?
+    empty,
     integer,
     number,
     string,

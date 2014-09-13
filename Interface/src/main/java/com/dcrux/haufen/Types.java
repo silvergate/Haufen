@@ -4,6 +4,7 @@ import com.dcrux.haufen.element.annotated.IAnnotatedElement;
 import com.dcrux.haufen.element.annotation.IAnnotationElement;
 import com.dcrux.haufen.element.bag.IBagElement;
 import com.dcrux.haufen.element.bool.IBoolElement;
+import com.dcrux.haufen.element.empty.IEmptyElement;
 import com.dcrux.haufen.element.integer.IIntegerElement;
 import com.dcrux.haufen.element.list.IListElement;
 import com.dcrux.haufen.element.map.IMapElement;
@@ -18,6 +19,7 @@ import com.dcrux.haufen.element.string.IStringElement;
  */
 public final class Types<T extends IElement> {
 
+    public static final Types<IEmptyElement> EMPTY = new Types<>(Type.empty);
     public static final Types<IIntegerElement> INTEGER = new Types<>(Type.integer);
     public static final Types<IAnnotatedElement> ANNOTATED = new Types<>(Type.annotated);
     public static final Types<IAnnotationElement> ANNOTATION = new Types<>(Type.annotation);
