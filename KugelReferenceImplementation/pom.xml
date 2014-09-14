@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>com.dcrux.haufen</groupId>
-            <artifactId>haufen</artifactId>
+            <artifactId>interface</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

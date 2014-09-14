@@ -15,10 +15,16 @@ public interface IBaseMapElement extends IElement, ICollection<IMapEntry<IElemen
 
     boolean putInfo(IElement key, IElement value);
 
+    boolean remove(IElement key);
+
     @Nullable
     IElement get(IElement key);
 
     boolean exists(IElement key);
+
+    IMapKeys getKeys();
+
+    IMapValues getValues();
 
     IElementPair<IElement, IElement> getAccessorForValue(IElement key);
 }

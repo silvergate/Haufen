@@ -5,6 +5,7 @@ package com.dcrux.haufen;
  */
 public enum Type {
     //TODO: Need 'enum' ?
+    //TODO: Need accessor? Should be a list of elements (1 or 2 elements)
     empty,
     integer,
     number,

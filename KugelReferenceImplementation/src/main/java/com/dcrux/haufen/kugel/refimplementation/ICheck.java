@@ -13,4 +13,6 @@ public interface ICheck {
     IElement getConfig();
 
     long getComplexity();
+
+    void validate();
 }

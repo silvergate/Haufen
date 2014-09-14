@@ -55,7 +55,11 @@ public class IntegerElement extends BaseElement implements IInternalElement, IIn
     @Override
     public IntegerElement set(long value) {
         this.value = value;
-        setType(IntegerType.signed);
+        /* We want a canonical representation. So every value >=0 is unsigned. */
+        if (value < 0)
+            setType(IntegerType.signed);
+        else
+            setType(IntegerType.unsigned);
         return this;
     }
 

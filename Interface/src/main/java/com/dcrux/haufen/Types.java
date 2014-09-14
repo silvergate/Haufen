@@ -40,7 +40,7 @@ public final class Types<T extends IElement> {
 
     private final Type type;
 
-    public Types(Type type) {
+    private Types(Type type) {
         this.type = type;
     }
 

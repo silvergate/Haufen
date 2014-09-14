@@ -131,9 +131,8 @@ public class SetElement extends BaseElement implements IInternalElement, ISetEle
     }
 
     @Override
-    public IBaseSetElement clear() {
+    public void clear() {
         getMemory().clear();
-        return this;
     }
 
     @Override

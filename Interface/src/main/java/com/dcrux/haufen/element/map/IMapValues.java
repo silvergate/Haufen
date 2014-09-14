@@ -6,5 +6,5 @@ import com.dcrux.haufen.element.common.IElementCollection;
 /**
  * Created by caelis on 09/09/14.
  */
-public interface IMapKeys extends IElementCollection<IElement, IMapKeys> {
+public interface IMapValues extends IElementCollection<IElement, IMapValues> {
 }

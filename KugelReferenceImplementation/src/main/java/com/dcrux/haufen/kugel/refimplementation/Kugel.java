@@ -5,7 +5,7 @@ import com.dcrux.haufen.IHaufen;
 import com.dcrux.haufen.Type;
 import com.dcrux.haufen.Types;
 import com.dcrux.haufen.element.map.IMapElement;
-import com.dcrux.haufen.kugel.refimplementation.check.IntegerValueCheck;
+import com.dcrux.haufen.kugel.refimplementation.check.integer.IntegerValueCheck;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +43,7 @@ public class Kugel implements ICheckFactory {
         ISingleCheckFactory factory = this.factories.get(name);
         if (factory == null)
             throw new IllegalArgumentException("Have no factory for type '" + name + "'.");
-        return factory.create(this.haufen, this, element);
+        return factory.create(this.haufen, this, map);
     }
 
     public ICheck create(String type) {

@@ -1,13 +1,19 @@
 package com.dcrux.haufen.kugel.refimplementation;
 
+import com.dcrux.haufen.IElement;
+
 /**
  * Created by caelis on 13/09/14.
  */
 public class CheckValidationFailed {
     private final String message;
+    private final ICheck check;
+    private final IElement element;
 
-    public CheckValidationFailed(String message) {
+    public CheckValidationFailed(String message, ICheck check, IElement element) {
         this.message = message;
+        this.check = check;
+        this.element = element;
     }
 
     public String getMessage() {
@@ -33,8 +39,10 @@ public class CheckValidationFailed {
 
     @Override
     public String toString() {
-        return "CheckValidationFailed{"
-                + message +
-                "}";
+        return "CheckValidationFailed{" +
+                "message='" + message + '\'' +
+                ", check=" + check +
+                ", element=" + element +
+                '}';
     }
 }

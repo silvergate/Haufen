@@ -172,9 +172,8 @@ public class ListElement extends BaseElement implements IInternalElement, IListE
     }
 
     @Override
-    public ListElement clear() {
+    public void clear() {
         getMemory().clear();
-        return this;
     }
 
     @Override

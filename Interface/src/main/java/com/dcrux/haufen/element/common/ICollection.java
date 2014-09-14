@@ -6,7 +6,7 @@ import java.util.Iterator;
  * Created by caelis on 07/09/14.
  */
 public interface ICollection<TEntry, TThis extends ICollection<TEntry, TThis>> {
-    TThis clear(); //TODO: change return to 'boolean' or 'void' (better void, since java don't return bool either) since you usually don't chain clear calls
+    void clear();
 
     Iterator<TEntry> iterator();
 

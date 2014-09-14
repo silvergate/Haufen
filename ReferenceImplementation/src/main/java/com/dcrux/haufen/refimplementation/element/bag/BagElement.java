@@ -367,11 +367,10 @@ public class BagElement extends BaseElement implements IInternalElement, IBagEle
     }
 
     @Override
-    public BagElement clear() {
+    public void clear() {
         this.numberOfElements = 0;
         this.numberOfUniqueElements = 0;
         getMemory().clear();
-        return this;
     }
 
     @Override

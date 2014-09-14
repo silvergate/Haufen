@@ -165,9 +165,8 @@ public class OrderedSetElement extends BaseElement implements IInternalElement, 
     }
 
     @Override
-    public IBaseSetElement clear() {
+    public void clear() {
         getMemory().clear();
-        return this;
     }
 
     @Override

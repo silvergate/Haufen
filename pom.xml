@@ -12,6 +12,7 @@
         <module>Interface</module>
         <module>ReferenceImplementation</module>
         <module>KugelReferenceImplementation</module>
+        <module>KugelInterface</module>
     </modules>
     <dependencies>
         <dependency>

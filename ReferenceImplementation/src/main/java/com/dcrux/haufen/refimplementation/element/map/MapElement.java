@@ -6,10 +6,7 @@ import com.dcrux.haufen.Types;
 import com.dcrux.haufen.data.IDataInput;
 import com.dcrux.haufen.data.IDataOutput;
 import com.dcrux.haufen.element.common.IElementPair;
-import com.dcrux.haufen.element.map.IBaseMapElement;
-import com.dcrux.haufen.element.map.IMapElement;
-import com.dcrux.haufen.element.map.IMapEntry;
-import com.dcrux.haufen.element.map.IMapKeys;
+import com.dcrux.haufen.element.map.*;
 import com.dcrux.haufen.refimplementation.IElementCreator;
 import com.dcrux.haufen.refimplementation.IElementIndexProvider;
 import com.dcrux.haufen.refimplementation.IElementProvider;
@@ -23,10 +20,7 @@ import com.dcrux.haufen.refimplementation.utils.InverseDataInput;
 import com.dcrux.haufen.refimplementation.utils.Varint;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -35,64 +29,6 @@ import java.util.function.Supplier;
 public class MapElement extends BaseElement implements IInternalElement, IMapElement {
 
     private static final int NUMBER_OF_ELEMENTS_FOR_ADDITIONAL_HEADER = 32;
-    private final IMapKeys mapKeys = new IMapKeys() {
-        private final MapElement outer = MapElement.this;
-
-        @Override
-        public IMapKeys clear() {
-            outer.clear();
-            return this;
-        }
-
-        @Override
-        public Iterator<IElement> iterator() {
-            final Iterator<IMapEntry<IElement, IElement>> original = outer.iterator();
-            return new Iterator<IElement>() {
-                @Override
-                public boolean hasNext() {
-                    return original.hasNext();
-                }
-
-                @Override
-                public IElement next() {
-                    return original.next().getKey();
-                }
-            };
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return outer.isEmpty();
-        }
-
-        @Override
-        public int getNumberOfEntries() {
-            return outer.getNumberOfEntries();
-        }
-
-        @Override
-        public boolean remove(IElement element) {
-            return outer.remove(ElementCastUtil.getInstance().cast(element));
-        }
-
-        @Override
-        public IMapKeys add(IElement element) {
-            throw new UnsupportedOperationException("Add is not supported on the key set of a map");
-        }
-
-        @Override
-        public boolean contains(IElement element) {
-            return outer.contains(ElementCastUtil.getInstance().cast(element));
-        }
-
-        @Override
-        public int getCount(IElement element) {
-            if (outer.contains(ElementCastUtil.getInstance().cast(element)))
-                return 1;
-            else
-                return 0;
-        }
-    };
     private Map<IInternalElement, IInternalElement> memory;
     private int numberOfElements;
     private IElementCreator elementCreator;
@@ -359,6 +295,11 @@ public class MapElement extends BaseElement implements IInternalElement, IMapEle
         return removedValue != null;
     }
 
+    public boolean remove(IElement key) {
+        final IInternalElement removedValue = getMemory().remove(ElementCastUtil.getInstance().cast(key));
+        return removedValue != null;
+    }
+
     @Override
     public boolean remove(IMapEntry<IElement, IElement> elementIElementIMapEntry) {
         return getMemory().remove(ElementCastUtil.getInstance().cast(elementIElementIMapEntry.getKey()), ElementCastUtil.getInstance().cast(elementIElementIMapEntry.getValue()));
@@ -438,9 +379,9 @@ public class MapElement extends BaseElement implements IInternalElement, IMapEle
         return getMemory().containsKey(key);
     }
 
-    public MapElement clear() {
+    @Override
+    public void clear() {
         getMemory().clear();
-        return this;
     }
 
     @Override
@@ -480,6 +421,11 @@ public class MapElement extends BaseElement implements IInternalElement, IMapEle
         return this.mapKeys;
     }
 
+    @Override
+    public IMapValues getValues() {
+        return this.mapValues;
+    }
+
     @Nullable
     @Override
     public IElement access(IElement type, IElement accessor) {
@@ -504,4 +450,143 @@ public class MapElement extends BaseElement implements IInternalElement, IMapEle
             }
         };
     }
+
+    private final IMapKeys mapKeys = new IMapKeys() {
+        private final MapElement outer = MapElement.this;
+
+        @Override
+        public void clear() {
+            outer.clear();
+        }
+
+        @Override
+        public Iterator<IElement> iterator() {
+            final Iterator<IMapEntry<IElement, IElement>> original = outer.iterator();
+            return new Iterator<IElement>() {
+                @Override
+                public boolean hasNext() {
+                    return original.hasNext();
+                }
+
+                @Override
+                public IElement next() {
+                    return original.next().getKey();
+                }
+            };
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return outer.isEmpty();
+        }
+
+        @Override
+        public int getNumberOfEntries() {
+            return outer.getNumberOfEntries();
+        }
+
+        @Override
+        public boolean remove(IElement element) {
+            return outer.remove(ElementCastUtil.getInstance().cast(element));
+        }
+
+        @Override
+        public IMapKeys add(IElement element) {
+            throw new UnsupportedOperationException("Add is not supported on the key set of a map (since I don't know the value)");
+        }
+
+        @Override
+        public boolean contains(IElement element) {
+            return outer.contains(ElementCastUtil.getInstance().cast(element));
+        }
+
+        @Override
+        public int getCount(IElement element) {
+            if (outer.contains(ElementCastUtil.getInstance().cast(element)))
+                return 1;
+            else
+                return 0;
+        }
+    };
+
+    private final IMapValues mapValues = new IMapValues() {
+        private final MapElement outer = MapElement.this;
+
+        @Override
+        public void clear() {
+            outer.clear();
+        }
+
+        @Override
+        public Iterator<IElement> iterator() {
+            final Iterator<IMapEntry<IElement, IElement>> original = outer.iterator();
+            return new Iterator<IElement>() {
+                @Override
+                public boolean hasNext() {
+                    return original.hasNext();
+                }
+
+                @Override
+                public IElement next() {
+                    return original.next().getValue();
+                }
+            };
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return outer.isEmpty();
+        }
+
+        @Override
+        public int getNumberOfEntries() {
+            return outer.getNumberOfEntries();
+        }
+
+        @Override
+        public boolean remove(IElement element) {
+            Set<IElement> keysToRemove = new HashSet<>();
+            outer.iterator().forEachRemaining(entry -> {
+                if (entry.getValue().equals(element))
+                    keysToRemove.add(entry.getKey());
+            });
+
+            final boolean[] removedAtLeastOne = {false};
+            keysToRemove.forEach(key -> {
+                boolean singleRemove = outer.remove(key);
+                if (singleRemove)
+                    removedAtLeastOne[0] = true;
+            });
+            return removedAtLeastOne[0];
+        }
+
+        @Override
+        public IMapValues add(IElement element) {
+            throw new UnsupportedOperationException("Add is not supported on map values (since I don't know the key).");
+        }
+
+        @Override
+        public boolean contains(IElement element) {
+            final Iterator<IMapEntry<IElement, IElement>> iterator = outer.iterator();
+            while (iterator.hasNext()) {
+                IMapEntry<IElement, IElement> entry = iterator.next();
+                if (entry.getValue().equals(element))
+                    return true;
+            }
+            return false;
+        }
+
+        @Override
+        public int getCount(IElement element) {
+            int count = 0;
+            final Iterator<IMapEntry<IElement, IElement>> iterator = outer.iterator();
+            while (iterator.hasNext()) {
+                IMapEntry<IElement, IElement> entry = iterator.next();
+                if (entry.getValue().equals(element))
+                    count++;
+            }
+            return count;
+        }
+    };
+
 }

@@ -1,4 +1,4 @@
-package com.dcrux.haufen.kugel.refimplementation.check;
+package com.dcrux.haufen.kugel.refimplementation.check.integer;
 
 import com.dcrux.haufen.IElement;
 import com.dcrux.haufen.IHaufen;
@@ -8,16 +8,17 @@ import com.dcrux.haufen.element.integer.IIntegerElement;
 import com.dcrux.haufen.element.map.IMapElement;
 import com.dcrux.haufen.kugel.refimplementation.CheckValidationFailed;
 import com.dcrux.haufen.kugel.refimplementation.ISingleCheckFactory;
+import com.dcrux.haufen.kugel.refimplementation.check.AbstractCheck;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by caelis on 13/09/14.
  */
-public class IntegerValueCheck extends AbstractCheck<IIntegerElement, IMapElement> {
+public class IntegerValueCheck extends AbstractCheck<IIntegerElement> {
 
     public static ISingleCheckFactory<IntegerValueCheck> FACTORY = new ISingleCheckFactory<IntegerValueCheck>() {
         @Override
-        public IntegerValueCheck create(IHaufen haufen, com.dcrux.haufen.kugel.refimplementation.ICheckFactory checkFactory, IElement element) {
+        public IntegerValueCheck create(IHaufen haufen, com.dcrux.haufen.kugel.refimplementation.ICheckFactory checkFactory, IMapElement element) {
             return new IntegerValueCheck(haufen, element);
         }
 
@@ -68,7 +69,7 @@ public class IntegerValueCheck extends AbstractCheck<IIntegerElement, IMapElemen
                 break;
         }
         if (!fullfilled) {
-            return new CheckValidationFailed("Integer value is invalid. Value: " + element + ", comparator " + getComparator() + " - compare to '" + getConfig().get(this.keyValue) + "',");
+            return new CheckValidationFailed("Integer value is invalid. Value: " + element + ", comparator " + getComparator() + " - compare to '" + getConfig().get(this.keyValue) + "',", this, element);
         }
         return null;
     }
